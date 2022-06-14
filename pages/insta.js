@@ -4,11 +4,10 @@ import { getAccessToken } from '../lib/insta'
 
 export default function Home() {
   const router = useRouter();
-  console.log("ehllo?", router.query);
   let query = router.query;
 
   useEffect(() => {
-    let access_token = getAccessToken(query);
+    let access_token = getAccessToken(query.code);
 
     console.log("hello you got access token", access_token);
   });
