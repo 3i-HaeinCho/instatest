@@ -1,52 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-
-function setupInsta(){
-	let appId = "1366224027193737";
-	let redUri = window.location.origin + "/insta";
-	let url = `https://api.instagram.com/oauth/authorize?client_id=${appId}&redirect_uri=${redUri}&scope=user_profile,user_media&response_type=code`;
-	window.open(url, "_blank").focus();
-}
-
-
-async function processPost() {
-  // data from frontend
-  let code = req.body.code;
-  let redirectUri = req.body.redirectUri;
-
-  let accessToken = null;
-  try {
-
-      // send form based request to Instagram API
-      let result = await request.post({
-          url: 'https://api.instagram.com/oauth/access_token',
-          form: {
-              client_id: process.env.INSTA_APP_ID,
-              client_secret: process.env.INSTA_APP_SECRET,
-              grant_type: 'authorization_code',
-              redirect_uri: req.body.redirectUri,
-              code: req.body.code
-          }
-      });
-
-      // Got access token. Parse string response to JSON
-      accessToken = JSON.parse(result).access_token;
-  } catch (e) {
-      console.log("Error=====", e);
-  }
-}
-
-function process() {
-  axios.post("https://your-server-url/init-insta", {
-    code: 'code-query-param-from-url',
-    redirectUrl: 'redirect-url' // needs to be registered at fb developer console
-  })
-  .then(({ data }) => {
-    // handle success case
-  })
-}
-
+import { authorize } from '../lib/insta';
 
 export default function Home() {
   return (
@@ -58,7 +13,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title} onClick={setupInsta}>
+        <h1 className={styles.title} onClick={authorize}>
           Welcome to initialize
         </h1>
 
